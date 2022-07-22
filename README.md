@@ -169,7 +169,7 @@ There are two folders you need to copy:
 
 ```
 cp -R ./node_modules/@pdftron/webviewer/public public/webviewer/lib
-cp -R ./node_modules/@pdftron/webviewer-bim/dist public/wv3d
+cp -R ./node_modules/@pdftron/webviewer-bim/dist public/webviewer-bim
 ```
 
 Afterwards the folder structure will look something like:
@@ -180,7 +180,7 @@ public/
     lib/
       ui/
       core/
-  wv3d/
+  webviewer-bim/
     compress/
     ui/
     webviewer-bim-min.js
