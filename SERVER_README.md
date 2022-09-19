@@ -2,7 +2,7 @@
 
 WebViewer BIM Server is a REST server for performing 3D document work.
 
-This server comes packaged as either a binary or a Docker image available for Linux or Windows.
+This server comes packaged as either a binary or a Docker image available for Linux, MacOS Intel(not in M1) or Windows.
 
 - [Setting up Server](#setting-up-server)
   * [Docker Image](#docker-image)
@@ -85,15 +85,9 @@ export trn_request_timeout=1
 
 ## Running Server
 
-### Running with binary and configuration file
-
-`./docjob-3d -c="myconfig.file"`
-
-This will load the myconfig file.
-
 ### Running with Docker and configuration file
 
-`docker run -p 8085:8085 -v /home/user/config:/home/docjob/config docjob-3d:latest`
+`docker run -p 8085:8085 -v {absolute_path_to_config.json}:/home/docjob/config docjob-3d:latest`
 
 This will mount the config file to the container into the path `/home/docjob/config` where it will be
 loaded from.
