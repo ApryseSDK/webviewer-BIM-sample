@@ -2,7 +2,7 @@
 
 WebViewer BIM Server is a REST server for performing 3D document work.
 
-This server comes packaged as either a binary or a Docker image available for Linux, MacOS Intel(not in M1) or Windows.
+This server comes packaged as either a binary or a Docker image available for Linux, MacOS Intel (not in M1) or Windows.
 
 - [Setting up Server](#setting-up-server)
   * [Docker Image](#docker-image)
@@ -87,72 +87,149 @@ export trn_request_timeout=1
 
 ### Running with Docker and configuration file
 
-`docker run -p 8085:8085 -v {absolute_path_to_config.json}:/home/docjob/config docjob-3d:latest`
+`docker run -p 8085:8085 -v {absolute_path_to_config.json}:/home/docjob/config 448036597521.dkr.ecr.us-east-1.amazonaws.com/docjob-3d:latest`
 
 This will mount the config file to the container into the path `/home/docjob/config` where it will be
 loaded from.
 
 ### Running with Docker and environment variables
 
-`docker run -p 8085:8085 -e trn_license="my_license_key" docjob-3d:latest`
+`docker run -p 8085:8085 -e trn_license="my_license_key" 448036597521.dkr.ecr.us-east-1.amazonaws.com/docjob-3d:latest`
 
 This will run the container with the configuration variable `trn_license` defined.
-
-### Troubleshooting
-
-If `docjob-3d:latest` does not work for you, you can replace with the Docker image ID retrieved from `docker image ls`:
-
-![docker-image-ls-result](https://user-images.githubusercontent.com/15149835/179813613-f59de431-41e9-4ede-914f-976f32029939.png)
-
-## Testing the container
-
-The easiest way to test the container is to submit a job against it. The following can be done with curl.
-
-```
-curl -X GET http://localhost:8085/v1/convert/3d/vsf -H "uri: https://foxystorage.blob.core.windows.net/ifctest/PlayersTheatre.ifc" 
-curl -X GET http://localhost:8085/v1/results/{jid} --output out.vsf         
-```
-
-You can also test against the `/healthz` api to see if the HTTP server is functioning.
 
 ## Managing Docker 
 
 It's important to maintain uptime when using a docker container. The best way to do this is with a container management tool such as `Portainer`, `Kubernetes`, `OpenShift`, `Docker`, `ECS` and much more.
 
-The tool should watch the `/healthz` API to see if the server is up.
+The tool should watch the `/v1/health` API to see if the server is up.
 
 We also recommend running a regular test job against your server to ensure it's still operational.
 
 ## WebViewer BIM Server APIs
 
-`GET /v1/3d/convert/vsf`
-  - Header `uri`:the url of the ifc doc to get vsf from
-  - Header `ext`:the extension of the source document if it cannot be determined from the URL
-  - Header: `local`: if set to true, expects URI to be a locally uploaded doc
-  - Returns `jid`: the job id of the result doc
-    - `202`: Job was started
+`GET /v1/convert/3d/{format}` - Converts a 3d asset into the specified format
+| Argument | Description |
+| --- | --- |
+| {format} | Specific format that can be **vsf** and **vsfx** to converts a 3d Asset to a streaming format for Web Viewing or property to extracts **property** meta-data from a 3d Asset
+  
+#### Request Headers
+```
+uri: https://foxystorage.blob.core.windows.net/ifctest/PlayersTheatre.ifc
+ext: ifc
+local: true
+```
+| Argument | Description |
+| --- | --- |
+| uri | The url of the ifc doc to get the sepecfic format from |
+| ext | The extension of the source document if it cannot be determined from the URL |
+| local | If set to true, expects URI to be a locally uploaded doc |
 
-`GET /v1/3d/convert/properties`
-  - Header `uri`:the url of the ifc doc to get props from   ``
-  - Header `ext`:the extension of the source document if it cannot be determined from the URL
-  - Header: `local`: if set to true, expects URI to be a locally uploaded doc
-  - Returns `jid`: the job id of the result doc
+#### Response Body
+A JSON document with the following structure:
+```JSON
+{
+  "jid": "The job id of the result doc"
+}
+```
+#### Status Code
+| Status Code | Description |
+| --- | --- |
+| 202 | If job was accepted |
 
-`GET /test` - tests a random queue job
+#### Example
+```shel
+curl -X GET http://localhost:8085/v1/convert/3d/vsf -H "uri: https://foxystorage.blob.core.windows.net/ifctest/PlayersTheatre.ifc"
+```
 
-`GET /healthz` - checks server health
+`GET /v1/test` - Tests if the server queue is functioning
 
-`POST /util/upload` - uploads a file for usage with other jobs
-  - Expects multipart form data with `Filename` containing filename and data within `file`
-  - returns source id `{"src": "source-id"}`
+#### Response Body
+A JSON document with the following structure:
+```JSON
+{
+  "status": "sent"
+}
+```
 
-`GET /v1/results/{job-id}` - pass a `jid` from 3d to get a result
-  Waits for the specified server timeout (default 30s) and returns the result for the ID.
-  - Returns 
-    - `404`: Not found, no job was found for requested result.
-    - `460`: Requested job has failed during execution and no result exists.
-    - `461`: Requested job has failed since the execution took longer than the job timeout and no result exists.
-    - `408`: Timeout was reached, job has not completed during this time.
-        - Set by `request_timeout` server timeout, defaults to 10s
-    - `200`: Job is completed, returning result.
-    - `102`: Processing, the job is still executing. Will eventually return one of the above status codes.
+#### Example
+```shel
+curl -X GET http://localhost:8085/v1/test
+```
+
+
+`GET /v1/health` - Checks server health
+
+#### Response Body
+A JSON document with the following structure:
+```JSON
+{
+  "status": "Up"
+}
+```
+
+#### Example
+```shel
+curl -X GET http://localhost:8085/v1/health
+```
+
+`POST /v1/util/upload` - Uploads a file for usage with other jobs
+
+#### Response Body
+Expects multipart form data with `Filename` containing filename and data within `file`
+
+#### Response Body
+A JSON document with the following structure:
+```JSON
+{
+  "src": "source-id"
+}
+```
+
+#### Example
+```shel
+curl -X POST localhost:8085/v1/util/upload -v --form file='@ABSOLUTE_PATH/PlayersTheatre.ifc'
+```
+
+`GET /v1/util/upload/status` - Checks if a uploaded file exists
+
+#### Request Headers
+```
+src: local://d41d8cd98f00b204e9800998ecf8427e.ifc
+```
+| Argument | Description |
+| --- | --- |
+| src | Expects src header containing the key of the local upload ie `local://12345sd.vsf` |
+
+#### Status Code
+| Status Code | Description |
+| --- | --- |
+| 200 | File was found |
+| 404 | File was not found |
+
+
+#### Example
+```shel
+curl -I -X GET localhost:8085/v1/util/upload/status -H "src: local://d41d8cd98f00b204e9800998ecf8427e.ifc"
+```
+
+`GET /v1/results/{job-id}` - Request result for job
+
+| Argument | Description |
+| --- | --- |
+| {job-id} | The job id of the result doc |
+
+#### Status Code
+| Status Code | Description |
+| --- | --- |
+| 102 | Processing, the job is still executing. Will eventually return one of the above status codes |
+| 200 | Job is completed, returning result |
+| 404 | Not found, no job was found for requested result |
+| 408 | <ul><li> Requested job has failed since the execution took longer than the job timeout and no result exists </li> <li> Should keep retrying for the result if you get a 408 </li> <li> Set by request_timeout server timeout, defaults to 10s </li> |
+| 460 | Requested job has failed during execution and no result exists |
+| 461 | Requested job has failed since the execution took longer than the job timeout and no result exists |
+
+#### Example
+```shel
+curl -X GET http://localhost:8085/v1/results/{jid} --output out.vsf
+```
