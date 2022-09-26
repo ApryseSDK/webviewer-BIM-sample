@@ -35,7 +35,7 @@ To get the sample working, both WebViewer BIM client and server must be setup an
 
 The server comes packaged as either a binary or a Docker image available for Linux or Windows. For server setup, configuration, and API details please read the Webviewer BIM Server [README](SERVER_README.md).
 
-The server is supported on Windows, MacOs Intel(not supported for M1) and Linux.
+The server is supported on Windows, Linux and MacOS Intel (M1 not supported).
 
 ### Prerequisites
 - Server license key provided by PDFTron.
