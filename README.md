@@ -182,7 +182,7 @@ public/
       core/
   webviewer-bim/
     compress/
-    ui/
+    oda/
     webviewer-bim-min.js
 ```
 
