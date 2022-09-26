@@ -2,7 +2,7 @@
 
 WebViewer BIM Server is a REST server for performing 3D document work.
 
-This server comes packaged as either a binary or a Docker image available for Linux, MacOS Intel (not in M1) or Windows.
+This server comes packaged as either a binary or a Docker image available for Windows, Linux and MacOS Intel (M1 not supported).
 
 - [Setting up Server](#setting-up-server)
   * [Docker Image](#docker-image)
