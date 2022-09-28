@@ -8,11 +8,8 @@ This server comes packaged as either a binary or a Docker image available for Wi
   * [Docker Image](#docker-image)
 - [Configuring Server](#configuring-server)
 - [Running Server](#running-server)
-  * [Running with binary and configuration file](#running-with-binary-and-configuration-file)
   * [Running with Docker and configuration file](#running-with-docker-and-configuration-file)
   * [Running with Docker and environment variables](#running-with-docker-and-environment-variables)
-  * [Troubleshooting](#troubleshooting)
-- [Testing the container](#testing-the-container)
 - [Managing Docker](#managing-docker)
 - [WebViewer BIM Server APIs](#webviewer-bim-server-apis)
 
@@ -20,25 +17,13 @@ This server comes packaged as either a binary or a Docker image available for Wi
 
 ### Docker Image
 
-1. Install [AWS CLI](https://aws.amazon.com/cli/).
-2. Install [Docker CLI](https://docs.docker.com/get-docker/).
-3. Set AWS credentials to allow you to download image from repository. Please reach out to PDFTron for these keys.
+1. Install [Docker CLI](https://docs.docker.com/get-docker/).
+
+2. Pull latest webviewer bim server image:
 
 ```bash
-> aws configure
-AWS Access Key ID [****************xxx]: xxx
-AWS Secret Access Key [****************xxx]: xxx
-Default region name [us-east-1]: us-east-1
-Default output format [json]: json
+docker pull pdftron/webviewer-bim-server:latest
 ```
-
-4. Login to AWS ECR:
-
-`aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 448036597521.dkr.ecr.us-east-1.amazonaws.com`
-
-5. Pull latest nightly experimental image:
-
-`docker pull 448036597521.dkr.ecr.us-east-1.amazonaws.com/docjob-3d:nightly_experimental`
 
 ## Configuring Server
 
@@ -75,26 +60,27 @@ The configuration file is a JSON file with the following options:
 }
  ```
 
- To pass these arguments as environment variables, just append `trn_` onto their values. Like so:
-
-```
-export trn_license="MY_LICENSE_KEY"
-export trn_allowed_origins="test.com,pdftron.com"
-export trn_request_timeout=1
+ In order to pass these arguments as enviroment variables, just run the docker contianer with variable with the prefix `trn_`, such as:
+```bash
+docker run -e trn_license="MYLICENSE" -p 8085:8085 webviewer-bim-server
 ```
 
 ## Running Server
 
 ### Running with Docker and configuration file
 
-`docker run -p 8085:8085 -v {absolute_path_to_config.json}:/home/docjob/config 448036597521.dkr.ecr.us-east-1.amazonaws.com/docjob-3d:latest`
+```bash
+docker run -p 8085:8085 -v ABSOLUTE_PATH_TO_CONFIG_JSON_FILE:/home/docjob/config webviewer-bim-server
+```
 
 This will mount the config file to the container into the path `/home/docjob/config` where it will be
 loaded from.
 
 ### Running with Docker and environment variables
 
-`docker run -p 8085:8085 -e trn_license="my_license_key" 448036597521.dkr.ecr.us-east-1.amazonaws.com/docjob-3d:latest`
+```bash
+docker run -p 8085:8085 -e trn_license="my_license_key" webviewer-bim-server
+```
 
 This will run the container with the configuration variable `trn_license` defined.
 
@@ -102,9 +88,7 @@ This will run the container with the configuration variable `trn_license` define
 
 It's important to maintain uptime when using a docker container. The best way to do this is with a container management tool such as `Portainer`, `Kubernetes`, `OpenShift`, `Docker`, `ECS` and much more.
 
-The tool should watch the `/v1/health` API to see if the server is up.
-
-We also recommend running a regular test job against your server to ensure it's still operational.
+When managing your webviewer-bim-server container, you can use its built in [health API](SERVER_README.md#response-body-2) to monitor its status.
 
 ## WebViewer BIM Server APIs
 
@@ -115,7 +99,7 @@ We also recommend running a regular test job against your server to ensure it's 
   
 #### Request Headers
 ```
-uri: https://foxystorage.blob.core.windows.net/ifctest/PlayersTheatre.ifc
+uri: url to you 3D asset
 ext: ifc
 local: true
 ```
@@ -139,7 +123,7 @@ A JSON document with the following structure:
 
 #### Example
 ```shel
-curl -X GET http://localhost:8085/v1/convert/3d/vsf -H "uri: https://foxystorage.blob.core.windows.net/ifctest/PlayersTheatre.ifc"
+curl -X GET http://localhost:8085/v1/convert/3d/vsf -H "uri: url_to_your_3d_asset"
 ```
 
 `GET /v1/test` - Tests if the server queue is functioning

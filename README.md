@@ -40,7 +40,6 @@ The server is supported on Windows, Linux and MacOS Intel (M1 not supported).
 ### Prerequisites
 - Server license key provided by PDFTron.
 - Install [Docker](https://docs.docker.com/get-docker/).
-- AWS keys provided by PDFTron.
 
 ### Setup server
 
