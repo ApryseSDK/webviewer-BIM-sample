@@ -35,12 +35,11 @@ To get the sample working, both WebViewer BIM client and server must be setup an
 
 The server comes packaged as either a binary or a Docker image available for Linux or Windows. For server setup, configuration, and API details please read the Webviewer BIM Server [README](SERVER_README.md).
 
-The server is supported on Windows and Linux.
+The server is supported on Windows, Linux and MacOS Intel (M1 not supported).
 
 ### Prerequisites
 - Server license key provided by PDFTron.
-- _(Optionally)_ Install [Docker](https://docs.docker.com/get-docker/).
-- _(Optionally)_ If installing via Docker, AWS keys provided by PDFTron.
+- Install [Docker](https://docs.docker.com/get-docker/).
 
 ### Setup server
 
@@ -78,9 +77,9 @@ npm start
 
 ## Usage
 
-### initialize3DViewer(instance, serverURL, options)
+### initializeBimViewer(instance, serverURL, options)
 
-Call `initialize3DViewer` within the promise resolve of WebViewer instance to initialize 3D viewer.
+Call `initializeBimViewer` within the promise resolve of WebViewer instance to initialize BIM viewer.
 - `instance` - WebViewer instance that is available after initializing.
 - `serverURL` - URL of WebViewer BIM server.
 - `options` - Initialization options for WebViewer BIM.
@@ -91,7 +90,7 @@ Returns a promise that resolves to an object containing the functions needed to 
 
 ```js
 import  Webviewer  from  '@pdftron/webviewer';
-import { initialize3DViewer } from '@pdftron/webviewer/bim-client'
+import { initializeBimViewer } from '@pdftron/webviewer/bim-client'
 
 Webviewer({
   path: '/webviewer/lib',
@@ -132,18 +131,18 @@ Webviewer({
     }
   };
 
-  const WebViewerBIM = await initialize3dViewer(instance, serverURL, options);
+  const WebViewerBIM = await initializeBimViewer(instance, serverURL, options);
 }
 ```
 
-### loadAsset(pathToAsset)
+### load3dAsset(pathToAsset)
 
-Call `loadAsset` after initializing the 3D viewer to load an IFC model.
+Call `load3dAsset` after initializing the 3D viewer to load an IFC model.
 - `pathToAsset` - URL or path to IFC model.
 
 ```js
-const webviewerBIM = await initialize3dViewer(instance, serverURL, options);
-webviewerBIM.viewer.loadAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc');
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+webviewerBIM.viewer.File.load3dAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc');
 ```
 
 ## Framework Agnostic Setup
@@ -182,7 +181,7 @@ public/
       core/
   webviewer-bim/
     compress/
-    ui/
+    oda/
     webviewer-bim-min.js
 ```
 
@@ -190,7 +189,7 @@ public/
 
 ```js
 import  Webviewer  from  '@pdftron/webviewer';
-import { initialize3DViewer } from '@pdftron/webivewer/bim-client'
+import { initializeBimViewer } from '@pdftron/webivewer/bim-client'
 
 Webviewer({
   path: '/webviewer/lib',
@@ -199,8 +198,8 @@ Webviewer({
   const license = `---- Insert commercial license key here after purchase ----`;
   const serverURL = `---- Insert server URL after setup ----`;
   const options = { license: license };
-  const WebViewerBIM = await initialize3dViewer(instance, serverURL, options);
-  WebViewerBIM.viewer.loadAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc');
+  const WebViewerBIM = await initializeBimViewer(instance, serverURL, options);
+  WebViewerBIM.viewer.File.load3dAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc');
 
 });
 ```
