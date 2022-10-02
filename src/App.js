@@ -1,24 +1,24 @@
 import { useRef, useEffect } from 'react';
 import WebViewer from '@pdftron/webviewer';
-import { initialize3dViewer } from '@pdftron/webviewer-bim-client';
+import { initializeBimViewer } from '@pdftron/webviewer-bim-client';
 
 import './App.css';
 
 function App() {
   const viewer = useRef(null);
-
   useEffect(() => {
     WebViewer(
       { path: '/webviewer/lib' },
       viewer.current,
     ).then(async instance => {
-
-      const license = `---- Insert commercial license key here after purchase ----`;
-      const serverURL = `---- Insert server URL after setup ----`;
-
+      const license = ``;
+      const serverURL = `https://d3d1.pdftron.com`;
+      // const serverURL = `http://localhost:8085`;
       const options = getViewerOptions(license);
-      const webviewerBIM = await initialize3dViewer(instance, serverURL, options);
-      webviewerBIM.viewer.loadAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc');
+      const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+      webviewerBIM.File.load3dAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc');
+      window.BIMInstance = webviewerBIM;
+      instance.iframeWindow.BIMInstance = webviewerBIM;
     });
   }, []);
 
