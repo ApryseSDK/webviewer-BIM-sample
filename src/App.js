@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import WebViewer from '@pdftron/webviewer';
-import { initialize3dViewer } from '@pdftron/webviewer-bim-client';
+import { initializeBimViewer } from '@pdftron/webviewer-bim-client';
 
 import './App.css';
 
@@ -17,8 +17,8 @@ function App() {
       const serverURL = `---- Insert server URL after setup ----`;
 
       const options = getViewerOptions(license);
-      const webviewerBIM = await initialize3dViewer(instance, serverURL, options);
-      webviewerBIM.viewer.loadAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc');
+      const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+      webviewerBIM.File.load3dAsset('uri for 3d Asset');
     });
   }, []);
 
@@ -31,30 +31,14 @@ function App() {
           Description: 'Description',
           GlobalID: 'GlobalId',
           Handle: 'handle',
-          EmptyRow1: 'EmptyRow1',
         },
         groups: {
-          Dimensions: {
-            Length: 'Length',
-            Width: 'Width',
-            Height: 'Height',
-            EmptyRow2: 'EmptyRow2',
-            GrossFootprintArea: 'GrossFootprintArea',
-            GrossSideArea: 'GrossSideArea',
-            GrossVolume: 'GrossVolume',
-          },
           ExampleGroup01: {
             ObjectType: 'ObjectType',
-            EmptyRow3: 'EmptyRow3',
             ObjectPlacement: 'ObjectPlacement',
           },
-          EmptyGroupTest: {
-            ObjectType: 'Elephants',
-            EmptyRow3: 'Tigers',
-            ObjectPlacement: 'Bears',
-          },
         },
-        groupOrder: ['RandomStuff', 'Zoo', 'Dimensions'],
+        groupOrder: ['ExampleGroup01'],
         removeEmptyRows: true,
         removeEmptyGroups: true,
         createMiscGroup: true,
