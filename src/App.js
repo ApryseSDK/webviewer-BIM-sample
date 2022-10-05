@@ -18,7 +18,7 @@ function App() {
 
       const options = getViewerOptions(license);
       const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
-      webviewerBIM.File.load3dAsset('uri for 3d Asset');
+      webviewerBIM.File.load3dAsset('<uri for 3d asset>');
     });
   }, []);
 
