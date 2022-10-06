@@ -4,15 +4,13 @@ WebViewer is a powerful JavaScript-based library that's part of the PDFTron SDK.
 
 This sample uses the BIM addon for WebViewer. It allows you to view, annotate, and collaborate on 3D models.
 
-**This product is currently in closed beta. If you are interested in using this product please [contact us](https://www.pdftron.com/form/contact-sales/).**
-
 ## Features
 
 - Load models from your own servers without relying on the cloud.
 - Navigate complex BIM models with the look and feel of the familiar Webviewer UI.
 - Traverse the model tree and toggle visibility of objects.
 - View model properties and rich metadata such as material and dimensional information.
-- (Coming Soon) Annotate BIM models to track design issues.
+- Annotate BIM models to track design issues.
 
 ![webviewer-bim-1-0-0](https://user-images.githubusercontent.com/15149835/178818619-700cd6ea-2671-45b0-b30c-5312e9b52b52.png)
 
@@ -39,6 +37,7 @@ The server is supported on Windows, Linux and MacOS Intel (M1 not supported).
 
 ### Prerequisites
 - Server license key provided by PDFTron.
+  - **Request a [trial license key](https://www.pdftron.com/form/trial-support/) to try for free.**
 - Install [Docker](https://docs.docker.com/get-docker/).
 
 ### Setup server
@@ -142,7 +141,7 @@ Call `load3dAsset` after initializing the 3D viewer to load an IFC model.
 
 ```js
 const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
-webviewerBIM.viewer.File.load3dAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc');
+webviewerBIM.File.load3dAsset('Add URL to your 3D asset here');
 ```
 
 ## Framework Agnostic Setup
@@ -199,7 +198,7 @@ Webviewer({
   const serverURL = `---- Insert server URL after setup ----`;
   const options = { license: license };
   const WebViewerBIM = await initializeBimViewer(instance, serverURL, options);
-  WebViewerBIM.viewer.File.load3dAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc');
+  WebViewerBIM.File.load3dAsset('Add URL to your 3D asset here');
 
 });
 ```
