@@ -21,10 +21,6 @@ There are two components to WebViewer BIM:
 1. Server-side file conversion that supports 3D streaming to the client.
 2. Client-side 3D viewer that renders BIM models and allows navigation entirely encapsulated in our familiar WebViewer UI.
 
-## Demo
-
-You can explore all of the functionality in our [live demo of Webviewer BIM](https://webviewer3d.web.app/).
-
 # Running the sample
 
 To get the sample working, both WebViewer BIM client and server must be setup and running. The server URL will be referenced in the front-end to allow communication between client and server.
@@ -105,7 +101,6 @@ Webviewer({
         Description: 'Description',
         GlobalID: 'GlobalId',
         Handle: 'handle',
-        EmptyRow1: 'EmptyRow1',
       },
       groups: {
         Dimensions: {
@@ -116,14 +111,9 @@ Webviewer({
           GrossFootprintArea: 'GrossFootprintArea',
           GrossSideArea: 'GrossSideArea',
           GrossVolume: 'GrossVolume',
-        }
-        EmptyGroupTest: {
-            ObjectType: 'Lions',
-            EmptyRow3: 'Tigers',
-            ObjectPlacement: 'Bears',
         },
       },
-      groupOrder: ['EmptyGroupTest', 'Dimensions'],
+      groupOrder: ['Dimensions'],
       removeEmptyRows: true,
       removeEmptyGroups: true,
       createMiscGroup: true,
@@ -141,7 +131,9 @@ Call `load3dAsset` after initializing the 3D viewer to load an IFC model.
 
 ```js
 const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
-webviewerBIM.File.load3dAsset('Add URL to your 3D asset here');
+
+webviewerBIM.File.load3dAsset('<uri for 3d asset>');
+
 ```
 
 ## Framework Agnostic Setup
@@ -198,7 +190,9 @@ Webviewer({
   const serverURL = `---- Insert server URL after setup ----`;
   const options = { license: license };
   const WebViewerBIM = await initializeBimViewer(instance, serverURL, options);
-  WebViewerBIM.File.load3dAsset('Add URL to your 3D asset here');
+
+  WebViewerBIM.File.load3dAsset('<uri for 3d asset>');
+
 
 });
 ```
