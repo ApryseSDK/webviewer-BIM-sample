@@ -146,7 +146,8 @@ webviewerBIM.File.load3dAsset('Add URL to your 3D asset here');
 
 ### unmountBimViewer()
 
-Call `unmountBimViewer` to revert the WebViewer back and clear memory
+Call `unmountBimViewer` to revert the WebViewer back and clear memory.
+
 ```js
 import  Webviewer  from  '@pdftron/webviewer';
 import { initializeBimViewer, unmountBimViewer } from '@pdftron/webviewer/bim-client'
@@ -169,6 +170,77 @@ Webviewer({
 }
 ```
 
+### enableSSAO()
+
+Call `enableSSAO` to enable Sub Surface Occulusion for the Viewer.
+
+```js
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+webviewerBIM.Viewer.enableSSAO();
+```
+
+### disableSSAO()
+
+Call `disableSSAO` to disable Sub Surface Occulusion for the Viewer.
+
+```js
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+webviewerBIM.Viewer.disableSSAO();
+```
+
+### setSSAOOptions()
+
+Call `setSSAOOptions` to adjust Sub Surface Occulusion for the Viewer.
+
+```js
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+webviewerBIM.Viewer.setSSAOOptions({
+ // example parameters：
+ isDynamicRadius: true,
+ radius: 1,
+ loops: 64,
+ blurRadius: 2,
+ power: 1.4,
+})
+```
+
+### enableAntiAliasing()
+
+Call `enableAntiAliasing` to enable Anti Aliasing for the Viewer.
+
+```js
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+webviewerBIM.Viewer.enableAntiAliasing();
+```
+
+### disableAntiAliasing()
+
+Call `disableAntiAliasing` to disable Anti Aliasing for the Viewer.
+
+```js
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+webviewerBIM.Viewer.disableAntiAliasing();
+```
+
+### setCameraSensitivity(number)
+
+Call `setCameraSensitivity` to set the sensitivity for Orbit/Pan tool.
+- `number` to set the sensitivity
+
+```js
+const tool = instance.docViewer.getToolMode()
+tool.setCameraSensitivity(10)
+```
+
+### getCameraSensitivity()
+
+Call `getCameraSensitivity` to get the sensitivity for Orbit/Pan tool.
+Returns a value of Number
+
+```js
+const tool = instance.docViewer.getToolMode()
+tool.getCameraSensitivity()
+```
 
 ## Framework Agnostic Setup
 
