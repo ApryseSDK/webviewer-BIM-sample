@@ -144,6 +144,32 @@ const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
 webviewerBIM.File.load3dAsset('Add URL to your 3D asset here');
 ```
 
+### unmountBimViewer()
+
+Call `unmountBimViewer` to revert the WebViewer back and clear memory
+```js
+import  Webviewer  from  '@pdftron/webviewer';
+import { initializeBimViewer, unmountBimViewer } from '@pdftron/webviewer/bim-client'
+
+Webviewer({
+  path: '/webviewer/lib',
+}, document.getElementById('viewer')).then(instance  => {
+  const  license = `---- Insert commercial license key here after purchase ----`;
+  const  serverURL = `---- Insert server URL after setup ----`;
+  const  options = {
+    license: license,
+  }
+
+  const WebViewerBIM = await initializeBimViewer(instance, serverURL, options);
+  webviewerBIM.File.load3dAsset(
+    "Add URL to your 3D asset here"
+  );
+  // input your code here
+  unmountBimViewer(instance)
+}
+```
+
+
 ## Framework Agnostic Setup
 
 This project sample uses React as the front-end framework, but you may wish to use (or not use) a different framework. This section shows how to setup the front-end agnostic of any framework:
@@ -159,7 +185,7 @@ It is recommended you install Node.js and NPM.
 
 ### Copying resources to public/ folder
 
-There are several files that need to be served client-side in your application. See [scripts/copy-webviewer-files.js](scripts/copy-webviewer-files.js) for a simple script to do this.
+There are several directories that need to be copied and served locally in your application.
 
 There are two folders you need to copy: 
 - node_modules/@pdftron/webviewer/public
@@ -169,6 +195,8 @@ There are two folders you need to copy:
 cp -R ./node_modules/@pdftron/webviewer/public public/webviewer/lib
 cp -R ./node_modules/@pdftron/webviewer-bim/dist public/webviewer-bim
 ```
+
+See [scripts/copy-webviewer-files.js](scripts/copy-webviewer-files.js) for a simple script to do this.
 
 Afterwards the folder structure will look something like:
 
