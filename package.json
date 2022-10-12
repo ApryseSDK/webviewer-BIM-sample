@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@pdftron/webviewer": "8.8-nightly",
+    "@pdftron/webviewer": "8.9-nightly",
     "@pdftron/webviewer-bim-client": "file:./package",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -14,7 +14,8 @@
     "react-scripts": "5.0.1"
   },
   "scripts": {
-    "start": "node prepare-host.js && PORT=3021 react-scripts start",
+    "prestart": "rm -rf node_modules/.cache/",
+    "start": "node prepare-host.js && PORT=3009 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
