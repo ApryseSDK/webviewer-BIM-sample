@@ -240,7 +240,7 @@ Call `getCameraSensitivity` to get the sensitivity for Orbit/Pan tool.
 Returns a value of Number
 
 ```js
-const tool = instance.docViewer.getToolMode()
+const tool = instance.Core.documentViewer.getToolMode();
 tool.getCameraSensitivity()
 ```
 
