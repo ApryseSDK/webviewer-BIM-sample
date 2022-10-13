@@ -227,8 +227,13 @@ Call `setCameraSensitivity` to set the sensitivity for Orbit/Pan tool.
 - `number` to set the sensitivity
 
 ```js
-const tool = instance.Core.documentViewer.getToolMode();
-tool.setCameraSensitivity(10);
+const cameraTools = {
+  orbit: 'Orbit3D',
+  pan: 'Pan3D',
+  walk: 'Walk',
+};
+const panTool = instance.Core.DocumentViewer.getTool(cameraTools.pan);
+panTool.setCameraSensitivity(10);
 ```
 
 ### getCameraSensitivity()
@@ -237,8 +242,15 @@ Call `getCameraSensitivity` to get the sensitivity for Orbit/Pan tool.
 Returns a value of Number
 
 ```js
-const tool = instance.Core.documentViewer.getToolMode();
-tool.getCameraSensitivity();
+const cameraTools = {
+  orbit: 'Orbit3D',
+  pan: 'Pan3D',
+  walk: 'Walk',
+};
+
+const orbitTool = instance.Core.DocumentViewer.getTool(cameraTools.orbit);
+orbitTool.getCameraSensitivity();
+
 ```
 
 ## Framework Agnostic Setup
