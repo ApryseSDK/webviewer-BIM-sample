@@ -162,7 +162,7 @@ Webviewer({
   }
 
   const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
-  webviewerBIM.File.load3dAsset(
+  webviewerBIM.File.load3dAsset("Add URL to your 3D asset here");
     "Add URL to your 3D asset here"
   );
  
