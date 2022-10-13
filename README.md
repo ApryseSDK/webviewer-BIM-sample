@@ -136,6 +136,114 @@ webviewerBIM.File.load3dAsset('<uri for 3d asset>');
 
 ```
 
+### unmountBimViewer()
+
+Call `unmountBimViewer` to revert WebViewer back to its original state, and to clear any memory from the WebViewer BIM client.
+
+```js
+import  Webviewer  from  '@pdftron/webviewer';
+import { initializeBimViewer, unmountBimViewer } from '@pdftron/webviewer-bim-client'
+
+Webviewer({
+  path: '/webviewer/lib',
+}, document.getElementById('viewer')).then(instance  => {
+  const  license = `---- Insert commercial license key here after purchase ----`;
+  const  serverURL = `---- Insert server URL after setup ----`;
+  const  options = {
+    license: license,
+  }
+
+  const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+  webviewerBIM.File.load3dAsset("Add URL to your 3D asset here");
+ 
+ // Call unmountBimViewer when you're ready to unmount.
+ // unmountBimViewer(instance);
+}
+```
+
+### enableSSAO()
+
+Call `enableSSAO` to enable screen-space ambient occlusion for the viewer.
+
+```js
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+webviewerBIM.Viewer.enableSSAO();
+```
+
+### disableSSAO()
+
+Call `disableSSAO` to disable screen-space ambient occlusion for the viewer.
+
+```js
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+webviewerBIM.Viewer.disableSSAO();
+```
+
+### setSSAOOptions()
+
+Call `setSSAOOptions` to adjust screen-space ambient occlusion for the viewer.
+
+```js
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+webviewerBIM.Viewer.setSSAOOptions({
+ // example parameters：
+ isDynamicRadius: true,
+ radius: 1,
+ loops: 64,
+ blurRadius: 2,
+ power: 1.4,
+})
+```
+
+### enableAntiAliasing()
+
+Call `enableAntiAliasing` to enable anti-aliasing for the viewer.
+
+```js
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+webviewerBIM.Viewer.enableAntiAliasing();
+```
+
+### disableAntiAliasing()
+
+Call `disableAntiAliasing` to disable anti-aliasing for the viewer.
+
+```js
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+webviewerBIM.Viewer.disableAntiAliasing();
+```
+
+### setCameraSensitivity(number)
+
+Call `setCameraSensitivity` to set the sensitivity for Orbit/Pan tool.
+- `number` to set the sensitivity
+
+```js
+const cameraTools = {
+  orbit: 'Orbit3D',
+  pan: 'Pan3D',
+  walk: 'Walk',
+};
+const panTool = instance.Core.DocumentViewer.getTool(cameraTools.pan);
+panTool.setCameraSensitivity(10);
+```
+
+### getCameraSensitivity()
+
+Call `getCameraSensitivity` to get the sensitivity for Orbit/Pan tool.
+Returns a value of Number
+
+```js
+const cameraTools = {
+  orbit: 'Orbit3D',
+  pan: 'Pan3D',
+  walk: 'Walk',
+};
+
+const orbitTool = instance.Core.DocumentViewer.getTool(cameraTools.orbit);
+orbitTool.getCameraSensitivity();
+```
+
 ## Framework Agnostic Setup
 
 This project sample uses React as the front-end framework, but you may wish to use (or not use) a different framework. This section shows how to setup the front-end agnostic of any framework:
@@ -151,7 +259,7 @@ It is recommended you install Node.js and NPM.
 
 ### Copying resources to public/ folder
 
-There are several files that need to be served client-side in your application. See [scripts/copy-webviewer-files.js](scripts/copy-webviewer-files.js) for a simple script to do this.
+There are several directories that need to be copied and served locally in your application.
 
 There are two folders you need to copy: 
 - node_modules/@pdftron/webviewer/public
@@ -161,6 +269,8 @@ There are two folders you need to copy:
 cp -R ./node_modules/@pdftron/webviewer/public public/webviewer/lib
 cp -R ./node_modules/@pdftron/webviewer-bim/dist public/webviewer-bim
 ```
+
+See [scripts/copy-webviewer-files.js](scripts/copy-webviewer-files.js) for a simple script to do this.
 
 Afterwards the folder structure will look something like:
 

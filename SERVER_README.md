@@ -62,7 +62,7 @@ The configuration file is a JSON file with the following options:
 
  In order to pass these arguments as enviroment variables, just run the docker contianer with variable with the prefix `trn_`, such as:
 ```bash
-docker run -e trn_license="MYLICENSE" -p 8085:8085 webviewer-bim-server
+docker run -e trn_license="MYLICENSE" -p 8085:8085 pdftron/webviewer-bim-server
 ```
 
 ## Running Server
@@ -70,7 +70,7 @@ docker run -e trn_license="MYLICENSE" -p 8085:8085 webviewer-bim-server
 ### Running with Docker and configuration file
 
 ```bash
-docker run -p 8085:8085 -v ABSOLUTE_PATH_TO_CONFIG_JSON_FILE:/home/docjob/config webviewer-bim-server
+docker run -p 8085:8085 -v ABSOLUTE_PATH_TO_CONFIG_JSON_FILE:/home/docjob/config pdftron/webviewer-bim-server
 ```
 
 This will mount the config file to the container into the path `/home/docjob/config` where it will be
@@ -79,7 +79,7 @@ loaded from.
 ### Running with Docker and environment variables
 
 ```bash
-docker run -p 8085:8085 -e trn_license="my_license_key" webviewer-bim-server
+docker run -p 8085:8085 -e trn_license="my_license_key" pdftron/webviewer-bim-server
 ```
 
 This will run the container with the configuration variable `trn_license` defined.
