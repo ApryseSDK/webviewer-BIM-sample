@@ -165,7 +165,9 @@ Webviewer({
   webviewerBIM.File.load3dAsset(
     "Add URL to your 3D asset here"
   );
-  // input your code here
+ 
+ // Call unmountBimViewer when you're ready to unmount.
+ // unmountBimViewer(instance);
   unmountBimViewer(instance)
 }
 ```
