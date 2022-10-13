@@ -146,7 +146,7 @@ webviewerBIM.File.load3dAsset('Add URL to your 3D asset here');
 
 ### unmountBimViewer()
 
-Call `unmountBimViewer` to revert the WebViewer back and clear memory.
+Call `unmountBimViewer` to revert WebViewer back to its original state, and to clear any memory from the WebViewer BIM client.
 
 ```js
 import  Webviewer  from  '@pdftron/webviewer';
