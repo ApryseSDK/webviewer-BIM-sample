@@ -217,7 +217,7 @@ webviewerBIM.Viewer.enableAntiAliasing();
 
 ### disableAntiAliasing()
 
-Call `disableAntiAliasing` to disable Anti Aliasing for the Viewer.
+Call `disableAntiAliasing` to disable anti-aliasing for the viewer.
 
 ```js
 const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
