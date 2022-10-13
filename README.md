@@ -241,7 +241,7 @@ Returns a value of Number
 
 ```js
 const tool = instance.Core.documentViewer.getToolMode();
-tool.getCameraSensitivity()
+tool.getCameraSensitivity();
 ```
 
 ## Framework Agnostic Setup
