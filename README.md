@@ -208,7 +208,7 @@ webviewerBIM.Viewer.setSSAOOptions({
 
 ### enableAntiAliasing()
 
-Call `enableAntiAliasing` to enable Anti Aliasing for the Viewer.
+Call `enableAntiAliasing` to enable anti-aliasing for the viewer.
 
 ```js
 const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
