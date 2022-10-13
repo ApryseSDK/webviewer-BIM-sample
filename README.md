@@ -150,7 +150,7 @@ Call `unmountBimViewer` to revert WebViewer back to its original state, and to c
 
 ```js
 import  Webviewer  from  '@pdftron/webviewer';
-import { initializeBimViewer, unmountBimViewer } from '@pdftron/webviewer/bim-client'
+import { initializeBimViewer, unmountBimViewer } from '@pdftron/webviewer-bim-client'
 
 Webviewer({
   path: '/webviewer/lib',
