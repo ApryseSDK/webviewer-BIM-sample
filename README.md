@@ -250,7 +250,6 @@ const cameraTools = {
 
 const orbitTool = instance.Core.DocumentViewer.getTool(cameraTools.orbit);
 orbitTool.getCameraSensitivity();
-
 ```
 
 ## Framework Agnostic Setup
