@@ -192,7 +192,7 @@ webviewerBIM.Viewer.disableSSAO();
 
 ### setSSAOOptions()
 
-Call `setSSAOOptions` to adjust Sub Surface Occulusion for the Viewer.
+Call `setSSAOOptions` to adjust screen-space ambient occlusion for the viewer.
 
 ```js
 const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
