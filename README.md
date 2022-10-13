@@ -231,7 +231,7 @@ Call `setCameraSensitivity` to set the sensitivity for Orbit/Pan tool.
 
 ```js
 const tool = instance.Core.documentViewer.getToolMode();
-tool.setCameraSensitivity(10)
+tool.setCameraSensitivity(10);
 ```
 
 ### getCameraSensitivity()
