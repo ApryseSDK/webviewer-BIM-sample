@@ -161,7 +161,7 @@ Webviewer({
     license: license,
   }
 
-  const WebViewerBIM = await initializeBimViewer(instance, serverURL, options);
+  const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
   webviewerBIM.File.load3dAsset(
     "Add URL to your 3D asset here"
   );
