@@ -174,7 +174,7 @@ Webviewer({
 
 ### enableSSAO()
 
-Call `enableSSAO` to enable Sub Surface Occulusion for the Viewer.
+Call `enableSSAO` to enable screen-space ambient occlusion for the viewer.
 
 ```js
 const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
