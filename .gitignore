@@ -6,8 +6,6 @@ public/webviewer-bim
 /node_modules
 /.pnp
 .pnp.js
-package
-1.tgz
 
 # testing
 /coverage

@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import WebViewer from '@pdftron/webviewer';
-import { initializeBimViewer } from '@pdftron/webviewer-bim-client';
+import { initializeBimViewer, preload3dAsset } from '@pdftron/webviewer-bim-client';
 
 import './App.css';
 
@@ -15,10 +15,34 @@ function App() {
       const serverURL = `https://d3d1.pdftron.com`;
       // const serverURL = `http://localhost:8085`;
       const options = getViewerOptions(license);
-      const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
-      webviewerBIM.File.load3dAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc');
-      window.BIMInstance = webviewerBIM;
-      instance.iframeWindow.BIMInstance = webviewerBIM;
+      instance.Core.documentViewer.addEventListener('BIMViewerReady', async (webviewerBIM)=>{
+        console.log('Event BIMViewerReady ---')
+        
+        webviewerBIM.File.load3dAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc')
+        window.BIMInstance = webviewerBIM;
+        instance.iframeWindow.BIMInstance = webviewerBIM;
+
+        const testOptions = {
+          loadProperties: true,
+        };
+  
+        const assetObject = await preload3dAsset(
+          serverURL,
+          'https://foxystorage.blob.core.windows.net/ifctest/301110FZK-Haus-EliteCAD.ifc',
+          testOptions
+        );
+  
+        while (true) {
+          const status = await webviewerBIM.File.checkAssetConversionProgress(assetObject);
+          if (status === true) {
+            break;
+          }
+          await new Promise((r) => setTimeout(r, 200));
+        }
+        await new Promise((r) => setTimeout(r, 5000));
+        await webviewerBIM.File.loadCached3dAsset(assetObject);
+      })
+      await initializeBimViewer(instance, serverURL, options);
     });
   }, []);
 
@@ -58,7 +82,8 @@ function App() {
         removeEmptyRows: true,
         removeEmptyGroups: true,
         createMiscGroup: true,
-      }
+      },
+      debugMode: true
     };
   }
 
