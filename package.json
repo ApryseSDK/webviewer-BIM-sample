@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@pdftron/webviewer": "8.10",
-    "@pdftron/webviewer-bim-client": "file:WV3D-MVP/dist",
+    "@pdftron/webviewer-bim-client": "file:./WV3D-MVP/package",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -15,7 +15,7 @@
   },
   "scripts": {
     "prestart": "rm -rf node_modules/.cache/",
-    "start": "node prepare-host.js && PORT=3019 react-scripts start",
+    "start": "node prepare-host.js && PORT=3020 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
