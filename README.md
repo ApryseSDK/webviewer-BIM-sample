@@ -136,6 +136,59 @@ webviewerBIM.File.load3dAsset('<uri for 3d asset>');
 
 ```
 
+### preload3dAsset(serverURL, pathToAsset, conversionOptions)
+
+Static method that preloads an IFC model for future loading. This can be used to convert model data prior to loading.
+- `serverURL` - URL to your BIM server instance.
+- `pathToAsset` - URL or path to IFC model.
+- `conversionOptions` - Optional options object to modify load behavior.
+
+```js
+const assetObject = await preload3dAsset(<serverURL>, <pathToAsset>, <conversionOptions>);
+```
+
+### loadCached3dAsset(assetObject)
+
+Call `loadCached3dAsset` to load an existing asset from the BIM server
+- `assetObject` - Object containing the ids for the asset data and optionally properties data.
+
+```js
+sampleAssetObject = {
+   modelDataId: '7bdb6aeab27191a882b9d3ed1e48afd4b490d755',
+   propertiesDataId: 'b204f18fb2168dc547d5056721c50ceb5bb3c62b',
+ };
+	
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+const assetObject = await webviewerBIM.File.loadCached3dAsset(sampleAssetObject);
+```
+
+### checkAssetConversionProgress(assetObject)
+
+Call `checkAssetConversionProgress` to check the progress on a preloaded Asset.
+- `assetObject` - Object containing the ids for the asset data and optionally properties data.
+
+Returns True if the asset is ready to be loaded, false otherwise.
+
+```js
+sampleAssetObject = {
+   modelDataId: '7bdb6aeab27191a882b9d3ed1e48afd4b490d755',
+   propertiesDataId: 'b204f18fb2168dc547d5056721c50ceb5bb3c62b',
+ };
+	
+const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+	
+// rudimentary polling against the BIM server to know when the Asset is ready
+while (true) {
+  const status = await webviewerBim.File.checkAssetConversionProgress(assetObject);
+  if (status === true) {
+    break;
+  }
+  await new Promise((r) => setTimeout(r, 200));
+}
+	
+const assetObject = await webviewerBIM.File.loadCached3dAsset(sampleAssetObject);
+```
+
 ### unmountBimViewer()
 
 Call `unmountBimViewer` to revert WebViewer back to its original state, and to clear any memory from the WebViewer BIM client.
