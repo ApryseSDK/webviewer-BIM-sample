@@ -138,25 +138,45 @@ webviewerBIM.File.load3dAsset('<uri for 3d asset>');
 
 ### preload3dAsset(serverURL, pathToAsset, conversionOptions)
 
-Static method that preloads an IFC model for future loading. This can be used to convert model data prior to loading.
+Static method that preloads an IFC model for future loading. This can be used to convert model data prior to loading. If 'enable_auth' is enabled on your BIM server you will also receive an Auth token for both the model data and the properties data.
 - `serverURL` - URL to your BIM server instance.
 - `pathToAsset` - URL or path to IFC model.
 - `conversionOptions` - Optional options object to modify load behavior.
 
 ```js
 const assetObject = await preload3dAsset(<serverURL>, <pathToAsset>, <conversionOptions>);
+
+/*
+Sample Asset Object
+{
+   modelData: {
+	id: '7bdb6aeab27191a882b9d3ed1e48afd4b490d755',
+	auth: 'be36e17d84d9eac35f41aef4cd9dc6e894f9f452b96175b2075308725338c3fe'
+   },
+   propertiesData: {
+	id: 'b204f18fb2168dc547d5056721c50ceb5bb3c62b',
+	auth: 'fa34e17d84g3awe35f41aef4cd9dc6e894f9f452b96175b2075308725338c3fe'
+   }
+};
+*/
 ```
 
 ### loadCached3dAsset(assetObject)
 
 Call `loadCached3dAsset` to load an existing asset from the BIM server
-- `assetObject` - Object containing the ids for the asset data and optionally properties data.
+- `assetObject` - Object containing the ids for the asset data and optionally properties data. If 1enable_auth1 is enabled on your BIM server you will also need to include an Auth token for both the model data and the properties data.
 
 ```js
 sampleAssetObject = {
-   modelDataId: '7bdb6aeab27191a882b9d3ed1e48afd4b490d755',
-   propertiesDataId: 'b204f18fb2168dc547d5056721c50ceb5bb3c62b',
- };
+   modelData: {
+	id: '7bdb6aeab27191a882b9d3ed1e48afd4b490d755',
+	auth: 'be36e17d84d9eac35f41aef4cd9dc6e894f9f452b96175b2075308725338c3fe'
+   },
+   propertiesData: {
+	id: 'b204f18fb2168dc547d5056721c50ceb5bb3c62b',
+	auth: 'fa34e17d84g3awe35f41aef4cd9dc6e894f9f452b96175b2075308725338c3fe'
+   }
+};
 	
 const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
 const assetObject = await webviewerBIM.File.loadCached3dAsset(sampleAssetObject);
@@ -171,9 +191,15 @@ Returns True if the asset is ready to be loaded, false otherwise.
 
 ```js
 sampleAssetObject = {
-   modelDataId: '7bdb6aeab27191a882b9d3ed1e48afd4b490d755',
-   propertiesDataId: 'b204f18fb2168dc547d5056721c50ceb5bb3c62b',
- };
+   modelData: {
+	id: '7bdb6aeab27191a882b9d3ed1e48afd4b490d755',
+	auth: 'be36e17d84d9eac35f41aef4cd9dc6e894f9f452b96175b2075308725338c3fe'
+   },
+   propertiesData: {
+	id: 'b204f18fb2168dc547d5056721c50ceb5bb3c62b',
+	auth: 'fa34e17d84g3awe35f41aef4cd9dc6e894f9f452b96175b2075308725338c3fe'
+   }
+};
 	
 const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
 	
