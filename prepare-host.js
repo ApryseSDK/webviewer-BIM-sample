@@ -3,7 +3,8 @@ const { exec } = require("child_process")
 
 const copyFiles = async () => {
   try {
-    await fs.copy('./WV3D-MVP/package/dist', './node_modules/@pdftron/webviewer-bim-client/dist');
+    await fs.copy('./WV3D-MVP/dist', './WV3D-MVP/package/dist');
+    await fs.copy('./WV3D-MVP/dist', './node_modules/@pdftron/webviewer-bim-client/dist');
 
     await fs.copy('./node_modules/@pdftron/webviewer/public', './public/webviewer/lib');
     await fs.copy('./node_modules/@pdftron/webviewer-bim-client/dist', './public/webviewer-bim/');

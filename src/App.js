@@ -15,14 +15,14 @@ function App() {
       const serverURL = `https://d3d1.pdftron.com`;
       // const serverURL = `http://localhost:8085`;
       const options = getViewerOptions(license);
-      instance.Core.documentViewer.addEventListener('BIMViewerReady', async (webviewerBIM)=>{
-        console.log('Event BIMViewerReady ---')
-        
-        webviewerBIM.File.load3dAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc')
-        window.BIMInstance = webviewerBIM;
-        instance.iframeWindow.BIMInstance = webviewerBIM;
+      instance.Core.documentViewer.addEventListener('BIMViewerReady', async (webviewerBIM) => {
+        console.log('Event BIMViewerReady ---');
 
-      })
+        webviewerBIM.File.load3dAsset('https://foxystorage.blob.core.windows.net/ifctest/drayton.ifc');
+        window.BIMInstance = webviewerBIM;
+        instance.UI.iframeWindow.BIMInstance = webviewerBIM;
+
+      });
       await initializeBimViewer(instance, serverURL, options);
     });
   }, []);
@@ -70,7 +70,7 @@ function App() {
 
   return (
     <div className="webviewer-bim-container">
-      <div className="webviewer" ref={viewer} style={{height: "100vh"}}></div>
+      <div className="webviewer" ref={viewer} style={{ height: "100vh" }}></div>
     </div>
   );
 }
