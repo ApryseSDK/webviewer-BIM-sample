@@ -22,25 +22,6 @@ function App() {
         window.BIMInstance = webviewerBIM;
         instance.iframeWindow.BIMInstance = webviewerBIM;
 
-        const testOptions = {
-          loadProperties: true,
-        };
-  
-        const assetObject = await preload3dAsset(
-          serverURL,
-          'https://foxystorage.blob.core.windows.net/ifctest/301110FZK-Haus-EliteCAD.ifc',
-          testOptions
-        );
-  
-        while (true) {
-          const status = await webviewerBIM.File.checkAssetConversionProgress(assetObject);
-          if (status === true) {
-            break;
-          }
-          await new Promise((r) => setTimeout(r, 200));
-        }
-        await new Promise((r) => setTimeout(r, 5000));
-        await webviewerBIM.File.loadCached3dAsset(assetObject);
       })
       await initializeBimViewer(instance, serverURL, options);
     });
