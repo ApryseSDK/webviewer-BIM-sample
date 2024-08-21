@@ -1,6 +1,6 @@
 # WebViewer BIM
 
-WebViewer is a powerful JavaScript-based library that's part of the PDFTron SDK. It allows you to view and annotate various file formats (PDF, MS Office, images, videos) on your web app with a fully customizable UI.
+WebViewer is a powerful JavaScript-based library that is part of the Apryse SDK. It allows you to view and annotate various file formats (PDF, MS Office, images, videos) on your web app with a fully customizable UI.
 
 This sample uses the BIM addon for WebViewer. It allows you to view, annotate, and collaborate on 3D models.
 
@@ -32,8 +32,8 @@ The server comes packaged as either a binary or a Docker image available for Lin
 The server is supported on Windows, Linux and MacOS Intel (M1 not supported).
 
 ### Prerequisites
-- Server license key provided by PDFTron.
-  - **Request a [trial license key](https://www.pdftron.com/form/trial-support/) to try for free.**
+- Server license key provided by Apryse.
+  - **Request a [trial license key](https://apryse.com/form/trial-support) to try for free.**
 - Install [Docker](https://docs.docker.com/get-docker/).
 
 ### Setup server
@@ -55,7 +55,7 @@ The server is supported on Windows, Linux and MacOS Intel (M1 not supported).
 
 1. Run the following:
 ```
-git clone https://github.com/XodoDocs/webviewer-BIM-sample.git
+git clone https://github.com/ApryseSDK/webviewer-BIM-sample.git
 cd webviewer-BIM-sample
 npm install
 ```
@@ -87,40 +87,52 @@ Returns a promise that resolves to an object containing the functions needed to 
 import  Webviewer  from  '@pdftron/webviewer';
 import { initializeBimViewer } from '@pdftron/webviewer/bim-client'
 
-Webviewer({
-  path: '/webviewer/lib',
-}, document.getElementById('viewer')).then(instance  => {
+function App() {
+  const viewer = useRef(null);
 
-  const  license = `---- Insert commercial license key here after purchase ----`;
-  const  serverURL = `---- Insert server URL after setup ----`;
-  const  options = {
-    license: license,
-    dataSchema: {
-      headerName: 'Name',
-      defaultValues: {
-        Description: 'Description',
-        GlobalID: 'GlobalId',
-        Handle: 'handle',
-      },
-      groups: {
-        Dimensions: {
-          Length: 'Length',
-          Width: 'Width',
-          Height: 'Height',
-          EmptyRow2: 'EmptyRow2',
-          GrossFootprintArea: 'GrossFootprintArea',
-          GrossSideArea: 'GrossSideArea',
-          GrossVolume: 'GrossVolume',
+  useEffect(() => {
+    WebViewer(
+      { path: '/webviewer/lib' },
+      viewer.current,
+    ).then(async instance => {
+
+      const license = `---- Insert commercial license key here after purchase ----`;
+      const serverURL = `---- Insert server URL after setup ----`;
+
+      const options = getViewerOptions(license);
+      const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
+    });
+  }, []);
+
+function getViewerOptions(license) {
+    return {
+      license,
+      dataSchema: {
+        headerName: 'Name',
+        defaultValues: {
+          Description: 'Description',
+          GlobalID: 'GlobalId',
+          Handle: 'handle',
         },
-      },
-      groupOrder: ['Dimensions'],
-      removeEmptyRows: true,
-      removeEmptyGroups: true,
-      createMiscGroup: true,
-    }
-  };
+        groups: {
+          ExampleGroup01: {
+            ObjectType: 'ObjectType',
+            ObjectPlacement: 'ObjectPlacement',
+          },
+        },
+        groupOrder: ['ExampleGroup01'],
+        removeEmptyRows: true,
+        removeEmptyGroups: true,
+        createMiscGroup: true,
+      }
+    };
+  }
 
-  const WebViewerBIM = await initializeBimViewer(instance, serverURL, options);
+  return (
+    <div className="webviewer-bim-container">
+      <div className="webviewer" ref={viewer} style={{ height: "100vh" }}></div>
+    </div>
+  );
 }
 ```
 
@@ -131,9 +143,7 @@ Call `load3dAsset` after initializing the 3D viewer to load an IFC model.
 
 ```js
 const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
-
 webviewerBIM.File.load3dAsset('<uri for 3d asset>');
-
 ```
 
 ### preload3dAsset(serverURL, pathToAsset, conversionOptions)
@@ -142,6 +152,10 @@ Static method that preloads an IFC model for future loading. This can be used to
 - `serverURL` - URL to your BIM server instance.
 - `pathToAsset` - URL or path to IFC model.
 - `conversionOptions` - Optional options object to modify load behavior.
+
+```js
+import { preload3dAsset } from '@pdftron/webviewer-bim-client';
+```
 
 ```js
 const assetObject = await preload3dAsset(<serverURL>, <pathToAsset>, <conversionOptions>);
@@ -218,26 +232,17 @@ const assetObject = await webviewerBIM.File.loadCached3dAsset(sampleAssetObject)
 ### unmountBimViewer()
 
 Call `unmountBimViewer` to revert WebViewer back to its original state, and to clear any memory from the WebViewer BIM client.
-
 ```js
 import  Webviewer  from  '@pdftron/webviewer';
 import { initializeBimViewer, unmountBimViewer } from '@pdftron/webviewer-bim-client'
+```
 
-Webviewer({
-  path: '/webviewer/lib',
-}, document.getElementById('viewer')).then(instance  => {
-  const  license = `---- Insert commercial license key here after purchase ----`;
-  const  serverURL = `---- Insert server URL after setup ----`;
-  const  options = {
-    license: license,
-  }
-
+```js
   const webviewerBIM = await initializeBimViewer(instance, serverURL, options);
   webviewerBIM.File.load3dAsset("Add URL to your 3D asset here");
  
  // Call unmountBimViewer when you're ready to unmount.
  // unmountBimViewer(instance);
-}
 ```
 
 ### enableSSAO()
@@ -298,12 +303,13 @@ Call `setCameraSensitivity` to set the sensitivity for Orbit/Pan tool.
 - `number` to set the sensitivity
 
 ```js
+const { documentViewer } = instance.Core;
 const cameraTools = {
   orbit: 'Orbit3D',
   pan: 'Pan3D',
   walk: 'Walk',
 };
-const panTool = instance.Core.DocumentViewer.getTool(cameraTools.pan);
+const panTool = documentViewer.getTool(cameraTools.pan);
 panTool.setCameraSensitivity(10);
 ```
 
@@ -313,13 +319,14 @@ Call `getCameraSensitivity` to get the sensitivity for Orbit/Pan tool.
 Returns a value of Number
 
 ```js
+const { documentViewer } = instance.Core;
 const cameraTools = {
   orbit: 'Orbit3D',
   pan: 'Pan3D',
   walk: 'Walk',
 };
 
-const orbitTool = instance.Core.DocumentViewer.getTool(cameraTools.orbit);
+const orbitTool = documentViewer.getTool(cameraTools.orbit);
 orbitTool.getCameraSensitivity();
 ```
 
@@ -386,13 +393,13 @@ Webviewer({
 });
 ```
 
-## Contributing
+## Showcase
 
-See [contributing](./CONTRIBUTING.md).
+Refer to a running sample on Apryse SDK [showcase page](https://showcase.apryse.com/bim-viewer).
 
 ## License
 
-See [license](./LICENSE).
+For licensing, refer to [License](LICENSE).
 
 -------
 This project was generated with Create React App. Go to [Create React App documentation](https://reactjs.org/docs/create-a-new-react-app.html) for more information.
