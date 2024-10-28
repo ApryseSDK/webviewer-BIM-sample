@@ -8,7 +8,7 @@ function App() {
   const viewer = useRef(null);
 
   useEffect(() => {
-    WebViewer(
+    WebViewer.Iframe(
       { path: '/webviewer/lib' },
       viewer.current,
     ).then(async instance => {
